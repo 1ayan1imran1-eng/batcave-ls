@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #070708;
+  --color-surface: #111114;
+  --color-raised: #1a1a1e;
+  --color-inset: #0c0c0e;
+  --color-fg: #e8e6e1;
+  --color-muted: #9a968e;
+  --color-faint: #6e6b66;
+  --color-accent: #b42323;
+  --color-accent-dim: #6e1616;
+  --color-accent-hot: #e03a3a;
+  --color-bone: #eceae4;
+  --color-line: #2c2c32;
+  --color-line-strong: #3d3d44;
+
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-sans: "Barlow", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+
+  --shadow-cave: 0 24px 80px rgb(0 0 0 / 0.55);
+  --shadow-ember: 0 0 24px rgb(180 35 35 / 0.28);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  body {
+    min-height: 100dvh;
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 70%, black);
+    color: var(--color-bone);
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  .cave-shell {
+    min-height: 100dvh;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgb(180 35 35 / 0.14), transparent 55%),
+      radial-gradient(900px 500px at 80% 120%, rgb(180 35 35 / 0.06), transparent 50%),
+      var(--color-bg);
+  }
+
+  .vignette {
+    position: relative;
+  }
+  .vignette::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 140px 40px rgb(0 0 0 / 0.72);
+    z-index: 2;
+  }
+
+  .scanlines {
+    position: relative;
+  }
+  .scanlines::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    opacity: 0.22;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 2px,
+      rgb(0 0 0 / 0.35) 2px 3px
+    );
+  }
+
+  .hairline {
+    border: 1px solid var(--color-line);
+  }
+
+  .panel {
+    background: color-mix(in oklab, var(--color-surface) 92%, black);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-cave);
+  }
+
+  .label-kicker {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  .bat-btn {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: 0;
+    color: var(--color-fg);
+    transition:
+      transform 150ms var(--ease-out),
+      color 150ms var(--ease-out),
+      filter 150ms var(--ease-out);
+  }
+  .bat-btn:hover {
+    color: var(--color-bone);
+    filter: drop-shadow(0 0 10px rgb(180 35 35 / 0.45));
+  }
+  .bat-btn:active {
+    transform: scale(0.96);
+  }
+  .bat-btn[data-active="true"] {
+    color: var(--color-accent-hot);
+    filter: drop-shadow(0 0 12px rgb(180 35 35 / 0.55));
+  }
+  .bat-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .bat-wing {
+    width: 3.25rem;
+    height: 1.55rem;
+    fill: currentColor;
+  }
+
+  .scene-3d {
+    perspective: 1400px;
+    perspective-origin: 50% 45%;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .ember-glow {
+    box-shadow: var(--shadow-ember);
+  }
+
+  .type-display {
+    font-family: var(--font-display);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes cave-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bat-float {
+  0%,
+  100% {
+    transform: translateY(0) rotateX(8deg) rotateY(-12deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(10deg) rotateY(12deg);
+  }
+}
+
+@keyframes signal-sweep {
+  0% {
+    opacity: 0.35;
+    transform: rotate(-18deg) scaleY(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: rotate(-12deg) scaleY(1.05);
+  }
+  100% {
+    opacity: 0.35;
+    transform: rotate(-18deg) scaleY(1);
+  }
+}
+
+@keyframes rain-fall {
+  from {
+    transform: translate3d(0, -20%, 0);
+  }
+  to {
+    transform: translate3d(0, 20%, 0);
+  }
+}
+
+.rain-sheet {
+  position: absolute;
+  inset: -40% 0;
+  background-image: repeating-linear-gradient(
+    18deg,
+    transparent 0 14px,
+    rgb(200 196 188 / 0.14) 14px 15px,
+    transparent 15px 46px
+  );
+  animation: rain-fall 0.85s linear infinite;
+}
+
+.rain-sheet-slow {
+  opacity: 0.55;
+  background-image: repeating-linear-gradient(
+    22deg,
+    transparent 0 22px,
+    rgb(200 196 188 / 0.1) 22px 23px,
+    transparent 23px 70px
+  );
+  animation-duration: 1.35s;
+}
+
+@keyframes lightning {
+  0%,
+  92%,
+  100% {
+    opacity: 0;
+  }
+  93% {
+    opacity: 0.7;
+  }
+  94.5% {
+    opacity: 0.05;
+  }
+  96% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes spin-y {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  41% {
+    opacity: 0.85;
+  }
+  43% {
+    opacity: 1;
+  }
+  47% {
+    opacity: 0.7;
+  }
+  49% {
+    opacity: 1;
+  }
+}
